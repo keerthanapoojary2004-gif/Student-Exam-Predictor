@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Exam Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="card">
+    <h1>Student Exam Predictor</h1>
+    <p class="subtitle">Enter student details to predict exam outcome.</p>
+
+    <form method="POST">
+      <label for="study_hours">Daily Study Hours</label>
+      <input
+        type="number"
+        step="0.1"
+        id="study_hours"
+        name="study_hours"
+        value="{{ form_values.get('study_hours', '4.0') }}"
+        required
+      />
+
+      <label for="attendance_pct">Attendance (%)</label>
+      <input
+        type="number"
+        step="1"
+        min="0"
+        max="100"
+        id="attendance_pct"
+        name="attendance_pct"
+        value="{{ form_values.get('attendance_pct', '80') }}"
+        required
+      />
+
+      <label for="assignments_done">Assignments Completed</label>
+      <select id="assignments_done" name="assignments_done">
+        <option value="yes" {% if form_values.get('assignments_done') == 'yes' %}selected{% endif %}>Yes</option>
+        <option value="no" {% if form_values.get('assignments_done') == 'no' %}selected{% endif %}>No</option>
+      </select>
+
+      <label for="past_score">Past Score</label>
+      <input
+        type="number"
+        step="1"
+        min="0"
+        max="100"
+        id="past_score"
+        name="past_score"
+        value="{{ form_values.get('past_score', '65') }}"
+        required
+      />
+
+      <button type="submit">Predict Result</button>
+    </form>
+
+    {% if prediction_label is not none %}
+      <div class="result {{ prediction_label }}">
+        <span>Prediction:</span>
+        <strong>{{ prediction_label|upper }} ({{ prediction_01 }})</strong>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
